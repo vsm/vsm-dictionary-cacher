@@ -1,0 +1,31 @@
+{
+  "name": "vsm-dictionary-cacher",
+  "version": "1.0.0",
+  "description": "Wrapper around a VSM-dictionary, that manages a cache of string-match results",
+  "main": "src/DictionaryCacher.js",
+  "scripts": {
+    "test": "mocha \"src/**/*.test.js\" --check-leaks",
+    "testw": "mocha \"src/**/*.test.js\" --check-leaks --watch"
+  },
+  "keywords": [
+    "VSM",
+    "dictionary",
+    "cache"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vsmjs/vsm-dictionary-cacher"
+  },
+  "author": "Steven Vercruysse (http://stcruy.com)",
+  "license": "CC-BY-NC-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/vsmjs/vsm-dictionary-cacher/issues"
+  },
+  "homepage": "https://github.com/vsmjs/vsm-dictionary-cacher#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.5",
+    "sinon": "^4.5.0"
+  },
+  "dependencies": {}
+}
