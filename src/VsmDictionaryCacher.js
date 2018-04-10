@@ -32,8 +32,8 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
     constructor(options) {
       super(options);
 
-      this.cacheMaxItems = cacheOptions.maxItems || 0;
-      this.cacheMaxAge   = cacheOptions.maxAge   || 0;
+      this.cacheMOMaxItems = cacheOptions.maxItems || 0;
+      this.cacheMOMaxAge   = cacheOptions.maxAge   || 0;
       this.cacheMOPredictEmpties =
         (typeof cacheOptions.predictEmpties) === 'undefined' ? true:
         !!cacheOptions.predictEmpties;
@@ -135,13 +135,13 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
 
     /**
      * If applicable, restarts a timer for automatically clearing the cache,
-     * at `cacheMaxAge` milliseconds after any last access to the cache.
+     * at `cacheMOMaxAge` milliseconds after any last access to the cache.
      */
     _restartCacheMOClearTimer() {
-      if (this.cacheMaxAge) {
+      if (this.cacheMOMaxAge) {
         clearTimeout(this.cacheMOClearTimer);  // Stop it if running already.
         this.cacheMOClearTimer =               // Start or restart it now.
-          setTimeout(this.clearCache.bind(this), this.cacheMaxAge);
+          setTimeout(this.clearCache.bind(this), this.cacheMOMaxAge);
       }
     }
 
@@ -173,7 +173,7 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
 
       // Only use a cache item if it didn't expire.
       var now = getNowTime();
-      if (this.cacheMaxAge  &&  now - item.lastAccessed > this.cacheMaxAge) {
+      if (this.cacheMOMaxAge  &&  now - item.lastAccessed > this.cacheMOMaxAge) {
         delete this.cacheMO[key];  // If a req. item expired, evict it from cache.
         return cb(null, null);
       }
@@ -194,8 +194,8 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
         this.cacheMO[key] = { value, lastAccessed: getNowTime() };
 
         // If the cache grew too large, evict the oldest item.
-        if (this.cacheMaxItems &&
-            Object.keys(this.cacheMO).length > this.cacheMaxItems) {
+        if (this.cacheMOMaxItems &&
+            Object.keys(this.cacheMO).length > this.cacheMOMaxItems) {
           deleteOldestItem(this.cacheMO);
         }
       }
