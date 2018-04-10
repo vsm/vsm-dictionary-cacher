@@ -4,26 +4,43 @@
 
 ## Summary
 
-`vsm-dictionary-cacher` is a wrapper around VSM-dictionaries.
+`vsm-dictionary-cacher` is a wrapper around VSM-dictionaries,  
+to speed up requests for string-matches in three ways:
 
 - It stores results from requests to `getMatchesForString()` in a cache.  
   These results are returned for subsequent requests
   that use same search-string &amp; options, instead of re-running the query.
-    
-  This helps e.g. `vsm-autocomplete` avoid making duplicate requests to an
-  online dictionary server.  
-  That creates a more responsive autocomplete when the user
-  types, backspaces, and types again.
-- In addition, it remembers for which strings there were no matches.  
+
+  > This helps e.g. `vsm-autocomplete` avoid making duplicate requests to an
+    online dictionary server.  
+    It creates a more responsive autocomplete when the user
+    types, and then backspaces.
+
+- It also prevents launching a second query to a server, that has the same
+  search-string &amp; options as an ongoing query.  
+  Instead, it makes the second query wait, and when the first one's result
+  comes in, it shares that result immediately with the second one.
+
+  > This helps e.g. `vsm-autocomplete` avoid making duplicate requests  
+    when a user types, and backspaces or re-types quickly.
+
+- And it can remember for which strings there were no matches.  
   Then for subsequently queried strings, that start with such a 'no matches'
   string, it can immediately return 'no matches' too.
+
+  > This helps e.g. `vsm-autocomplete` avoid making unnecessary requests  
+    for search-strings for which a substring already returned no matches.
+
+<br>
+
+This package provides a factory function that accepts any VsmDictionary class,
+and returns a subclass of it,  
+which simply adds an extra layer of caching functionality
+to `getMatchesForString()`.
 
 <br>
 
 ## Use
-
-This package provides a factory function that accepts any VsmDictionary class, and returns a subclass of it
-that simply has an extra layer of caching functionality.
 
 Install like:
 ```
@@ -85,7 +102,7 @@ with these optional properties:
       But the collection gets cleared whenever the main cache gets cleared (so
       also after a long time of no access (see below under 'Memory management')).
 
-Use like:
+Specify options like:
 ```
 const CachedDictionary = cacher(Dictionary, { maxItems: 100, maxAge: 180000 });
 ```
