@@ -345,7 +345,7 @@ describe('VsmDictionaryCacher.js', function() {
       });
     });
 
-    it('for: default `true`: after no matches for "ab", ' +
+    it('after no matches for "ab", ' +
        'it still queries for "abc" when using different options; ' +
        'i.e. no interference for different options-objects', function(cb) {
       makeVsmDictionaryStub();  // Using the default: `{ predictEmpties: true }`.
@@ -353,6 +353,18 @@ describe('VsmDictionaryCacher.js', function() {
       dict.getMatchesForString('ab', {}, (err, res) => {
         called = 0;
         dict.getMatchesForString('abc', { x: 1 }, (err, res) => {
+          called.should.equal(1);
+          cb();
+        });
+      });
+    });
+
+    it('still queries for "a" after "" returned no results', function(cb) {
+      makeVsmDictionaryStub();
+      result = _R0;
+      dict.getMatchesForString('', {}, (err, res) => {
+        called = 0;
+        dict.getMatchesForString('a', {}, (err, res) => {
           called.should.equal(1);
           cb();
         });

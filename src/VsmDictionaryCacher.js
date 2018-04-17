@@ -278,7 +278,8 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
         var list = this.cacheMOEmpties[key];
         if (!list)  list = this.cacheMOEmpties[key] = [];  // Initialize list.
 
-        if (list.indexOf(str) == -1)  list.push(str);  // Add, but no duplicates.
+        // Add, but not the empty string, nor duplicates.
+        if (str !== ''  &&  list.indexOf(str) == -1)  list.push(str);
       }
     }
 
