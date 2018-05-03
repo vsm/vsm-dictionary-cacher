@@ -12,8 +12,11 @@ describe('VsmDictionaryCacher.js', function() {
   var called;  // This will be set to 1 if the stub getMatchesFor..() is called.
   var result;  // The stub function will return this, whatever it is set to.
                // (See below).
-  var calledParent; // Is 1 if stub's parent's addExtraMatchesFor..() is called.
-  var arrGivenToParent;
+
+  var calledExtra; // Is 1 if stub's parent's addExtraMatchesFor..() is called.
+  var calledExtraArr;  // Is the array given to the addExtra..() call.
+
+  var calledRefTerms;  // Is 1 if the stub's getRefTerms() is called explicitly.
 
   var clock;  // See https://stackoverflow.com/questions/17446064
 
@@ -21,16 +24,10 @@ describe('VsmDictionaryCacher.js', function() {
   function makeVsmDictionaryStub(cacheOptions, delay = 0, error = null) {
 
     class VsmDictionaryStub {
-      addExtraMatchesForString(str, arr, options, cb) {
-        setTimeout(   () => {
-          calledParent = 1;
-          arrGivenToParent = arr;
-          cb(null, arr);
-        }, 0);
-      }
-    };
 
-    class VsmDictionarySubclassStub extends VsmDictionaryStub {
+      constructor() {
+        this.matchDescrs = { refTerm: '[referring term]' }; // Cacher needs this.
+      }
 
       // This stub function would normally *query* an underlying datastore.
       // So if it is called, it means that the function which overrides it
@@ -44,13 +41,28 @@ describe('VsmDictionaryCacher.js', function() {
       //   with this new `result`.
       getMatchesForString(str, options, cb) {
         setTimeout(
-          function f() { called = 1;  cb(error, result); },
+          function fm() { called = 1;  cb(error, result); },
+          delay || 0
+        );
+      }
+
+      addExtraMatchesForString(str, arr, options, cb) {
+        setTimeout(
+          function fe() {
+            calledExtra = 1;  calledExtraArr = arr;  cb(null, arr);
+          }, 0
+        );
+      }
+
+      getRefTerms(options, cb) {
+        setTimeout(
+          function fr() { calledRefTerms = 1;  cb(error, { items: [] }); },
           delay || 0
         );
       }
 
     };
-    CachedDictionary = cacher(VsmDictionarySubclassStub, cacheOptions);
+    CachedDictionary = cacher(VsmDictionaryStub, cacheOptions);
     dict = new CachedDictionary();
   }
 
@@ -69,9 +81,12 @@ describe('VsmDictionaryCacher.js', function() {
     //       in a `getMatchesForString()` call. So if a test uses multiple such
     //       calls, it must reset `called` to 0 between those calls (if needed).
     called = 0;
-    calledParent = 0;
-    arrGivenToParent = undefined;
     result = { items: ['default'] };
+
+    calledExtra = 0;
+    calledExtraArr = undefined;
+
+    calledRefTerms = 0;
   });
 
 
@@ -386,15 +401,18 @@ describe('VsmDictionaryCacher.js', function() {
       });
     });
 
-    it('still calls `VsmDictionary.addExtraMatchesForString()`, for "1e3", ' +
+    it('still calls `VsmDictionary.addExtraMatchesForString()`, and ' +
+       '`this.getRefTerms()`, for "1e3", ' +
        'after "1e" returned no results', function(cb) {
       makeVsmDictionaryStub();
       result = _R0;
       dict.getMatchesForString('1e', {}, (err, res) => {
-        calledParent = 0;
+        calledExtra = 0;
+        calledRefTerms = 0;
         dict.getMatchesForString('1e3', {}, (err, res) => {
-          calledParent.should.equal(1);
-          arrGivenToParent.should.deep.equal([]);  // Parent gets OK data format.
+          calledExtra   .should.equal(1);        // getExtra..() gets called, ..
+          calledExtraArr.should.deep.equal([]);  // ..and with right data format.
+          calledRefTerms.should.equal(1);  // getRefTerms() gets called too.
           res.should.deep.equal(_R0);  // Cacher integrates empty result OK.
           cb();
         });

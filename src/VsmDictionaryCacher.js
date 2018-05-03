@@ -36,7 +36,7 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
       this.cacheMOMaxAge   = cacheOptions.maxAge   || 0;
       this.cacheMOPredictEmpties =
         (typeof cacheOptions.predictEmpties) === 'undefined' ? true:
-        !!cacheOptions.predictEmpties;
+          !!cacheOptions.predictEmpties;
 
       /**
        * This stores the literal result of successful previous string-queries
@@ -102,12 +102,22 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
         //   then we do not need to run a query (to the VsmDictionary-subclass).
         // - However, there can still be number-matches or exact refTerm-matches,
         //   for which a substring has a cacheEmpties hit.
-        //   So we still need to call the VsmDictionary-parent-class's
-        //   `addExtraMatchesForString()`, but based on an empty query-result.
+        //   So we still need to
+        //   - call the subclass's `getRefTerms()`, and
+        //   - call the VsmDictionary-parent-class's `addExtraMatchesForString()`.
         if (this._getCacheMOEmptiesPrediction(str, options)) {
-          return this.addExtraMatchesForString(str, [], options,
-            (err, arr) => callAsync(cb, err, { items: arr })
-          );
+
+          return this.getRefTerms({ filter: { str } }, (err, refTerms) => {
+            if (err)  return cb(err);
+            var arr = !refTerms.items.length ? [] : [{  // Make a match-object..
+              id: '',  dictID: '',  type: 'R',          // ..for a refTerm.
+              str: refTerms.items[0],  descr: this.matchDescrs.refTerm
+            }];
+
+            this.addExtraMatchesForString(str, arr, options,
+              (err, arr) => callAsync(cb, err, { items: arr })
+            );
+          });
         }
 
         // Delegate the query to the parent class, as no result was found here.
@@ -249,7 +259,7 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
           // specific `cb`. (Because `cb` changes with every `while`-iteration).
           (() => {
             var myCb = cb;
-            setTimeout(() => { myCb(err, value, false); }, 1);
+            setTimeout(() => { myCb(err, value, false) }, 1);
           }) ();
         }
       }
@@ -306,7 +316,7 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
     }
 
   };
-}
+};
 
 
 
