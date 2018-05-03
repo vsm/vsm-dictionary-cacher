@@ -10,9 +10,10 @@ describe('VsmDictionaryCacher.js', function() {
   var dict;
 
   var called;  // This will be set to 1 if the stub getMatchesFor..() is called.
-  var calledParent;  // Is 1 if stub's parent's addExtraMatchesFor..() is called.
   var result;  // The stub function will return this, whatever it is set to.
                // (See below).
+  var calledParent; // Is 1 if stub's parent's addExtraMatchesFor..() is called.
+  var arrGivenToParent;
 
   var clock;  // See https://stackoverflow.com/questions/17446064
 
@@ -21,7 +22,11 @@ describe('VsmDictionaryCacher.js', function() {
 
     class VsmDictionaryStub {
       addExtraMatchesForString(str, arr, options, cb) {
-        setTimeout(   () => { calledParent = 1;  cb(null, arr); },   0   );
+        setTimeout(   () => {
+          calledParent = 1;
+          arrGivenToParent = arr;
+          cb(null, arr);
+        }, 0);
       }
     };
 
@@ -65,6 +70,7 @@ describe('VsmDictionaryCacher.js', function() {
     //       calls, it must reset `called` to 0 between those calls (if needed).
     called = 0;
     calledParent = 0;
+    arrGivenToParent = undefined;
     result = { items: ['default'] };
   });
 
@@ -388,6 +394,8 @@ describe('VsmDictionaryCacher.js', function() {
         calledParent = 0;
         dict.getMatchesForString('1e3', {}, (err, res) => {
           calledParent.should.equal(1);
+          arrGivenToParent.should.deep.equal([]);  // Parent gets OK data format.
+          res.should.deep.equal(_R0);  // Cacher integrates empty result OK.
           cb();
         });
       });

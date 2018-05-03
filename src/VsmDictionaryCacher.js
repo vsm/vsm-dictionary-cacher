@@ -105,8 +105,8 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
         //   So we still need to call the VsmDictionary-parent-class's
         //   `addExtraMatchesForString()`, but based on an empty query-result.
         if (this._getCacheMOEmptiesPrediction(str, options)) {
-          return this.addExtraMatchesForString(str, { items: [] }, options,
-            (err, res) => callAsync(cb, err, res)
+          return this.addExtraMatchesForString(str, [], options,
+            (err, arr) => callAsync(cb, err, { items: arr })
           );
         }
 
