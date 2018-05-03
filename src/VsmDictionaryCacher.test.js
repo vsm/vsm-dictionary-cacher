@@ -10,6 +10,7 @@ describe('VsmDictionaryCacher.js', function() {
   var dict;
 
   var called;  // This will be set to 1 if the stub getMatchesFor..() is called.
+  var calledParent;  // Is 1 if stub's parent's addExtraMatchesFor..() is called.
   var result;  // The stub function will return this, whatever it is set to.
                // (See below).
 
@@ -17,7 +18,14 @@ describe('VsmDictionaryCacher.js', function() {
 
 
   function makeVsmDictionaryStub(cacheOptions, delay = 0, error = null) {
-    Dictionary = class VsmDictionaryStub {
+
+    class VsmDictionaryStub {
+      addExtraMatchesForString(str, arr, options, cb) {
+        setTimeout(   () => { calledParent = 1;  cb(null, arr); },   0   );
+      }
+    };
+
+    class VsmDictionarySubclassStub extends VsmDictionaryStub {
 
       // This stub function would normally *query* an underlying datastore.
       // So if it is called, it means that the function which overrides it
@@ -37,7 +45,7 @@ describe('VsmDictionaryCacher.js', function() {
       }
 
     };
-    CachedDictionary = cacher(Dictionary, cacheOptions);
+    CachedDictionary = cacher(VsmDictionarySubclassStub, cacheOptions);
     dict = new CachedDictionary();
   }
 
@@ -56,6 +64,7 @@ describe('VsmDictionaryCacher.js', function() {
     //       in a `getMatchesForString()` call. So if a test uses multiple such
     //       calls, it must reset `called` to 0 between those calls (if needed).
     called = 0;
+    calledParent = 0;
     result = { items: ['default'] };
   });
 
@@ -366,6 +375,19 @@ describe('VsmDictionaryCacher.js', function() {
         called = 0;
         dict.getMatchesForString('a', {}, (err, res) => {
           called.should.equal(1);
+          cb();
+        });
+      });
+    });
+
+    it('still calls `VsmDictionary.addExtraMatchesForString()`, for "1e3", ' +
+       'after "1e" returned no results', function(cb) {
+      makeVsmDictionaryStub();
+      result = _R0;
+      dict.getMatchesForString('1e', {}, (err, res) => {
+        calledParent = 0;
+        dict.getMatchesForString('1e3', {}, (err, res) => {
+          calledParent.should.equal(1);
           cb();
         });
       });

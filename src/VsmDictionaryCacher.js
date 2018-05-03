@@ -98,10 +98,16 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
           return callAsync(cb, err, value);
         }
 
-        // If a shorter string (for same options) already returned no matches,
-        // then we can also return 'no matches' now.
+        // - If a shorter string (for same options) already returned no matches,
+        //   then we do not need to run a query (to the VsmDictionary-subclass).
+        // - However, there can still be number-matches or exact refTerm-matches,
+        //   for which a substring has a cacheEmpties hit.
+        //   So we still need to call the VsmDictionary-parent-class's
+        //   `addExtraMatchesForString()`, but based on an empty query-result.
         if (this._getCacheMOEmptiesPrediction(str, options)) {
-          return callAsync(cb, null, { items: [] });
+          return this.addExtraMatchesForString(str, { items: [] }, options,
+            (err, res) => callAsync(cb, err, res)
+          );
         }
 
         // Delegate the query to the parent class, as no result was found here.
