@@ -98,9 +98,19 @@ with these optional properties:
     So we can avoid running that query and immediately return the empty
     `{ items: [] }` for 'abc'.
     Default is `true`.  
-    - For that collection of strings, `maxItems` and `maxAge` do not apply.  
+    - Note: For that collection of strings, `maxItems` and `maxAge` do not apply.  
       But the collection gets cleared whenever the main cache gets cleared (so
       also after a long time of no access (see below under 'Memory management')).
+    - Note: a query for matching refTerms (to `getRefTerms()`)
+      will still be made,  
+      because e.g. after a call for "i" would give no results (and "i" ends up
+      in cacheEmpties), a subsequent call for the refTerm "it" should still
+      return it as a result.
+      (Note that a refTerm is only returned as an exact string match).
+    - Note: a call to `getMatchesForString()` is also still made,  
+      because e.g. after a call for "1e" gave no results,
+      a subsequent call for the valid number-string "1e5"
+      should still return it as a result.
 
 Specify options like:
 ```
