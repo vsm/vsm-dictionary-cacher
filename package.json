@@ -1,6 +1,6 @@
 {
   "name": "vsm-dictionary-cacher",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Wrapper around a VSM-dictionary, that manages a cache of string-match results",
   "main": "src/VsmDictionaryCacher.js",
   "scripts": {

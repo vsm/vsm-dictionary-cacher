@@ -42,7 +42,7 @@ to `getMatchesForString()`.
 
 ## Use
 
-Install like:
+Install like (after also installing a `vsm-dictionary-...` of choice) :
 ```
 npm install vsm-dictionary-cacher --save-prod
 ```
@@ -58,16 +58,16 @@ var dict = new CachedDictionary();  // This makes an instance.
 
 
 // This will query the Dictionary as normal, bypassing the cache.
-dict.getMatchesForString('abc', {filter: {dictID: 'Foo'}}, (err, res) => {
+dict.getMatchesForString('abc', {filter: {dictID: ['Foo']}}, (err, res) => {
 
   // This will get the result from the cache (instead of re-running the query).
-  dict.getMatchesForString('abc', {filter: {dictID: 'Foo'}}, (err, res) => {
+  dict.getMatchesForString('abc', {filter: {dictID: ['Foo']}}, (err, res) => {
 
   });
 
   // These will *not* get their result from the cache.
-  dict.getMatchesForString('abc', {filter: {dictID: 'BAR'}}, (err, res) => {});
-  dict.getMatchesForString('QQQ', {filter: {dictID: 'Foo'}}, (err, res) => {});
+  dict.getMatchesForString('abc', {filter: {dictID: ['BAR']}}, (err, res) => {});
+  dict.getMatchesForString('QQQ', {filter: {dictID: ['Foo']}}, (err, res) => {});
 
 });
 ```
