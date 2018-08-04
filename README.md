@@ -44,7 +44,7 @@ to `getMatchesForString()`.
 
 Install like (after also installing a `vsm-dictionary-...` of choice) :
 ```
-npm install vsm-dictionary-cacher --save-prod
+npm install vsm-dictionary-cacher
 ```
 
 Then use like:
@@ -60,7 +60,7 @@ var dict = new CachedDictionary();  // This makes an instance.
 // This will query the Dictionary as normal, bypassing the cache.
 dict.getMatchesForString('abc', {filter: {dictID: ['Foo']}}, (err, res) => {
 
-  // This will get the result from the cache (instead of re-running the query).
+  // This will get the result from the cache, instead of re-running the query.
   dict.getMatchesForString('abc', {filter: {dictID: ['Foo']}}, (err, res) => {
 
   });
@@ -93,12 +93,12 @@ with these optional properties:
     `getMatchesForString()` returned no results (i.e.: `{ items: [] }`).  
     Then for any subsequent query (with same options) for a string that
     starts with any such empty-returning-string, we can assume that no results
-    will be returned either.
-    E.g. if a search for 'ab' returned nothing, then neither will 'abc'.  
-    So we can avoid running that query and immediately return the empty
-    `{ items: [] }` for 'abc'.
+    will be returned either.  
+    E.g. if a search for 'ab' returned nothing, then neither will 'abc'.
+    So it can avoid running that query and immediately returns the empty
+    `{ items: [] }` for 'abc'.  
     Default is `true`.  
-    - Note: For that collection of strings, `maxItems` and `maxAge` do not apply.  
+    - Note: for this collection of strings, `maxItems` and `maxAge` do not apply.  
       But the collection gets cleared whenever the main cache gets cleared (so
       also after a long time of no access (see below under 'Memory management')).
     - Note: a query for matching refTerms (to `getRefTerms()`)
@@ -141,8 +141,9 @@ When `maxAge` is not 0 (i.e. when cache items can expire), then:
   expired, are deleted only at that point;
 - so cache items that are not accessed, are not deleted right after
   they expire;
-- but the whole cache gets cleared automatically, when `maxAge` ms has passed
-  since any last cache-access; i.e. all items' memory gets released then.  
+- but the whole cache gets cleared automatically, when `maxAge` milliseconds
+  have passed since any last cache-access; i.e. all items' memory gets released
+  then.  
   (So, cache-memory gets released only after *all* items have passed maxAge,
   instead of managing expiration+deletion for each item individually).
 
