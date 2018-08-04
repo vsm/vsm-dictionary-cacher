@@ -113,7 +113,7 @@ with these optional properties:
       should still return it as a result.
 
 Specify options like:
-```
+```javascript
 const CachedDictionary = cacher(Dictionary, { maxItems: 100, maxAge: 180000 });
 ```
 
