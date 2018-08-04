@@ -48,7 +48,7 @@ npm install vsm-dictionary-cacher
 ```
 
 Then use like:
-```
+```javascript
 const Dictionary       = require('vsm-dictionary-local');  // ...or any other VsmDictionary implementation.
 const cacher           = require('vsm-dictionary-cacher');
 const CachedDictionary = cacher(Dictionary);  // This makes a new subclass.
