@@ -147,14 +147,14 @@ which inserts cache handling code into several functions:
       And it works even if `clearCache()` (see below) is called during this
       process.
 
-    > A `vsm-autocomplete` needs a corresponding dictInfo for each of its
-    > string-matches.  
-    > So if its string-matches already came from cache-hits, then the above
-    > makes all its other data also come only from cache.
+      > A `vsm-autocomplete` needs a corresponding dictInfo for each of its
+      > string-matches.  
+      > So if its string-matches already came from cache-hits, then the above
+      > makes all its other data also come only from cache.
   
-    > If a `vsm-box` with a template, or several `vsm-box`es loaded on a same
-    > page, would launch multiple concurrent requests for dictInfos, then this
-    > cache process may result in a lot less queries to the underlying datastore.
+      > If a `vsm-box` with a template, or several `vsm-box`es loaded on a same
+      > page, would launch multiple concurrent requests for dictInfos, then this
+      > caching may result in a lot less queries to the underlying datastore.
 
 <br>
 
