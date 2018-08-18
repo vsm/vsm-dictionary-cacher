@@ -183,6 +183,8 @@ which inserts cache handling code into several functions:
     > This prevents that `loadFixedTerms()` is called multiple times for the same
     > data, when loading multiple `vsm-box`es with the same template.
 
+<br>
+
 ## Options
 
 An options object can be given as second argument to the factory function
