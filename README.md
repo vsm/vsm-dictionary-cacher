@@ -214,11 +214,11 @@ An options object can be given as second argument to the factory function
     - Note: `maxItems` does not apply to this collection of strings either.  
       But the collection gets cleared, like everything else, by a call
       to `clearCache()` (see below).
-    - Note: this is handled in `getEntryMatchesForString()`, not
-      in `getMatchesForString`, because the latter may still add 'extra' matches
+    - Note: this is handled in `getEntryMatchesForString()`, not in
+      `getMatchesForString()`, because the latter may still add 'extra' matches
       (refTerm/number/fixedTerm), other than the 'entry'-type matches.  
       - Example 1: after a call for "i" would give no entry-matches (and "i"
-        ends up in cacheEmpties), a subsequent call for "it" should still
+        ends up in the 'cacheEmpties'), a subsequent call for "it" should still
         return "it" as a refTerm-match.  
         (Note that a refTerm only matches for a full, not partial, string match).  
       - Example 2: after a call for "1e" gave no results, a subsequent call
@@ -231,5 +231,5 @@ An options object can be given as second argument to the factory function
 An extra function is added to the VsmDictionary subclass:
 
 - `clearCache()`:  
-    This removes all data from the cache layer, including e.g the list used by
+    This removes all data from the cache layer, including e.g. the list used by
     `predictEmpties`.
