@@ -145,7 +145,7 @@ describe('VsmDictionaryCacher.js', () => {
       });
 
       it('lets the first call to getMatchesForString() pass through, ' +
-        'to let the parent class query', cb => {
+         'to let the parent class query', cb => {
         dict.getMatchesForString('a', {}, (err, res) => {
           calledMO.should.equal(1);
           expect(err).to.equal(null);
@@ -155,7 +155,7 @@ describe('VsmDictionaryCacher.js', () => {
       });
 
       it('...but uses cached results for a second call ' +
-        'with same arguments', cb => {
+         'with same arguments', cb => {
         dict.getMatchesForString('a', {}, (err, res) => {
           calledMO.should.equal(0);
           expect(err).to.equal(null);
