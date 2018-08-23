@@ -3,12 +3,12 @@ const chai = require('chai');  chai.should();
 const expect = chai.expect;
 
 
-describe('helpers/util.js', function() {
-  describe('callAsync()', function() {
+describe('helpers/util.js', () => {
+  describe('callAsync()', () => {
     var f = (a, b, cb) => cb(null, a * b);
     var count = 0;
 
-    it('calls a function on the next event loop', function(cb) {
+    it('calls a function on the next event loop', cb => {
       callAsync(f, 2, 5, (err, ans) => {
         expect(err).to.equal(null);
         ans.should.equal(10);
@@ -19,9 +19,9 @@ describe('helpers/util.js', function() {
     });
   });
 
-  describe('deleteOldestCacheItem()', function() {
+  describe('deleteOldestCacheItem()', () => {
     it('removes the item with the oldest (smallest) `lastAccessed` property ' +
-       'from a cache ', function() {
+       'from a cache ', () => {
       var cache = {
         a: { value: 1, lastAccessed: 50 },
         b: { value: 2, lastAccessed: 49 },
