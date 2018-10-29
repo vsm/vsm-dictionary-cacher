@@ -759,23 +759,23 @@ describe('VsmDictionaryCacher.js', () => {
         });
       });
 
-      it('queries for dict-name, but does not use cache for lookup (but does ' +
-         'put the result in it); and sorts by dictID', cb => {
-        dict.getDictInfos({filter: {name: ['Name Y', 'Name Z']}}, (err, res) => {
+      it('does not use cache for queries with filter other than dictID; ' +
+         'but does put the result in the cache', cb => {
+        dict.getDictInfos({filter: {xyz: 'ignored'}}, (err, res) => {
           expect(err).to.equal(null);
-          res.should.deep.equal({ items: [di4, di5] });
-          Object.keys(dict.cacheDI).length.should.equal(2); // Filled the cache.
+          res.should.deep.equal({ items: [di1, di2, di3, di4, di5] });
+          Object.keys(dict.cacheDI).length.should.equal(5); // Filled the cache.
 
-          dict.getDictInfos({filter:{name:['Name Y', 'Name Z']}}, (err, res) => {
+          dict.getDictInfos({filter: {xyz: 'ignored'}}, (err, res) => {
             expect(err).to.equal(null);
-            res.should.deep.equal({ items: [di4, di5] });
+            res.should.deep.equal({ items: [di1, di2, di3, di4, di5] });
             calledDI.should.equal(1); // I.e. it queried; did not use the cache.
             cb();
           });
         });
       });
 
-      it('sort cache-hits either by ID or by name', cb => {
+      it('sorts cache-hits either by ID or by name', cb => {
         dict.getDictInfos({ filter: { id: ['E', 'D', 'C'] } }, (err, res) => {
           res.should.deep.equal({ items: [di3, di4, di5] });
 
