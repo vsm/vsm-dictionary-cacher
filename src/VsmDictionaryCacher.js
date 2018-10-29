@@ -95,7 +95,7 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
       /**
        * DictInfo-objects cache.
        * - All dictInfos received from any query are stored here, by dictID key.
-       * - For dictInfos that it expected but did not recieve, and which are
+       * - For dictInfos that it expected but did not receive, and which are
        *   thus non-existent, it stores a `'-'`.
        * E.g.: `{ dictID1: {dictID: dictID1, name: ..}, dictID2: '-', .. }`.
        */
