@@ -343,14 +343,14 @@ module.exports = function VsmDictionaryCacher(VsmDictionary, cacheOptions) {
      * This overrides a parent-class function.
      * It delegates the three types of request to one of 3 other functions,
      * based on `options`. These types are:
-     * - Request for all dictInfos.          --> [We call this a 'req-for-IDs'].
-     * - Request based on a list of dict-names (this bypasses the cache).
-     * - Request based on a list of dictIDs. --> [We call this a 'req-for-all'].
+     * - Request for all dictInfos.          --> [We call this a 'req-for-all'].
+     * - Request based on a filter other than for dictIDs (bypasses the cache).
+     * - Request based on a list of dictIDs. --> [We call this a 'req-for-IDs'].
      */
     getDictInfos(options, cb) {
       if (!options.filter)  return this._handleGetDictInfosAll(options, cb);
 
-      // Request that use a filter other than for dictIDs, bypass the cache;
+      // Requests that use a filter other than for dictIDs, bypass the cache;
       // but any valid result they receive will still update the cache.
       if (!options.filter.id ) {
         return super.getDictInfos(options, (err, res) => {
