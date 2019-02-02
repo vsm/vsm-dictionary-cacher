@@ -12,7 +12,7 @@ and fixedTerms-preloading.
 
 <br>
 
-## Use
+## Use in Node.js
 
 Install like (after also installing a `vsm-dictionary-...` of choice) :
 ```
@@ -54,6 +54,27 @@ dict.getMatchesForString('abc', {filter: {dictID: ['Foo']}}, (err, res) => {
 Specify options like:
 ```js
 const CachedDictionary = cacher(Dictionary, { maxItems: 1000 });
+```
+
+<br>
+
+## Use in the browser
+
+```
+<script src="https://unpkg.com/vsm-dictionary-cacher@^1.0.0/dist/vsm-dictionary-cacher.min.js"></script>
+```
+after which it is accessible as the global variable `VsmDictionaryCacher`.  
+Then it can be wrapped around a VsmDictionary, e.g. a `VsmDictionaryLocal`, like:
+
+```
+....
+
+<script src="https://unpkg.com/vsm-dictionary-local@^2.0.0/dist/vsm-dictionary-local.min.js"></script>
+
+<script>
+var dict = new (VsmDictionaryCacher(VsmDictionaryLocal)) (options);
+dict.getMatchesForString(....
+</script>
 ```
 
 <br>
