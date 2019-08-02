@@ -1,6 +1,6 @@
 {
   "name": "vsm-dictionary-cacher",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Wrapper around a VSM-dictionary, that manages a cache of string-match results",
   "main": "src/VsmDictionaryCacher.js",
   "scripts": {
@@ -25,18 +25,18 @@
   },
   "homepage": "https://github.com/vsmjs/vsm-dictionary-cacher#readme",
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
-    "babel-loader": "^8.0.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^1.0.1",
-    "eslint": "^5.14.0",
+    "eslint": "^5.16.0",
     "mocha": "^5.2.0",
-    "sinon": "^7.2.3",
-    "terser-webpack-plugin": "^1.2.2",
-    "vsm-dictionary-local": "^2.6.0",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
+    "sinon": "^7.3.2",
+    "terser-webpack-plugin": "^1.4.1",
+    "vsm-dictionary-local": "^2.6.1",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
   },
   "dependencies": {}
 }
