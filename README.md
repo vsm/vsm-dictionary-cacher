@@ -254,3 +254,9 @@ An extra function is added to the VsmDictionary subclass:
 - `clearCache()`:  
     This removes all data from the cache layer, including e.g. the list used by
     `predictEmpties`.
+
+<br>
+
+## License
+
+This project is licensed under the AGPL license - see [LICENSE.md](LICENSE.md).

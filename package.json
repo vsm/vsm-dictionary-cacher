@@ -19,7 +19,7 @@
     "url": "git+https://github.com/vsmjs/vsm-dictionary-cacher"
   },
   "author": "Steven Vercruysse (http://stcruy.com)",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/vsmjs/vsm-dictionary-cacher/issues"
   },
