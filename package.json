@@ -16,14 +16,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vsmjs/vsm-dictionary-cacher"
+    "url": "git+https://github.com/vsm/vsm-dictionary-cacher"
   },
   "author": "Steven Vercruysse (http://stcruy.com)",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/vsmjs/vsm-dictionary-cacher/issues"
+    "url": "https://github.com/vsm/vsm-dictionary-cacher/issues"
   },
-  "homepage": "https://github.com/vsmjs/vsm-dictionary-cacher#readme",
+  "homepage": "https://github.com/vsm/vsm-dictionary-cacher#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
